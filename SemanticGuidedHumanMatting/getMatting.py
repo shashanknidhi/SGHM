@@ -13,7 +13,7 @@ import utils
 import inference
 
 
-def Matting(image_dir,result_dir):
+def Matting(image_dir):
 
   model = HumanMatting(backbone='resnet50')
   model = nn.DataParallel(model).cuda().eval()
@@ -33,8 +33,8 @@ def Matting(image_dir,result_dir):
 
       pred_alpha, pred_mask = inference.single_inference(model, img)
 
-      output_dir = result_dir + image_path[len(image_dir):image_path.rfind('/')]
-      if not os.path.exists(output_dir):
-          os.makedirs(output_dir)
-      save_path = output_dir + '/' + image_name + '.png'
+      # output_dir = result_dir + image_path[len(image_dir):image_path.rfind('/')]
+      if not os.path.exists(output_matting):
+          os.makedirs(output_matting)
+      save_path = 'output_matting/fg_mask.png'
       Image.fromarray(((pred_alpha * 255).astype('uint8')), mode='L').save(save_path)
